@@ -1,12 +1,21 @@
 use std::char;
+use std::fmt::{self, Formatter, Display};
 
 mod block;
+
+struct Codepoint(u32);
+
+impl Display for Codepoint {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    write!(f, "U+{:04X}", self.0)
+  }
+}
 
 fn main() -> Result<(), std::io::Error> {
   for block in block::Block::all() {
     println!("{} – {}", block.name(), block.chart());
     if block.surrogates() || block.boring() {
-      println!("U+{:04X}–U+{:04X}", block.first_codepoint(), block.last_codepoint());
+      println!("{}–{}", Codepoint(block.first_codepoint()), Codepoint(block.last_codepoint()));
       continue;
     }
 

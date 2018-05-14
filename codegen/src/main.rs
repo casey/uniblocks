@@ -16,7 +16,7 @@ use failure::Error;
 use std::fs;
 
 fn main() -> Result<(), Error> {
-  let blocks = fs::read_to_string("../Blocks.txt")?.parse()?;
+  let blocks = fs::read_to_string("Blocks.txt")?.parse()?;
   println!("{}", code::tokens(blocks));
   Ok(())
 }
