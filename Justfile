@@ -1,4 +1,4 @@
-default: run
+default: codegen
 
 run:
 	cargo run
@@ -6,6 +6,9 @@ run:
 check:
 	cargo check
 
+get:
+	curl https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt > Blocks.txt
+
 codegen:
-	curl https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt > codegen/Blocks.txt
-	cd codegen && cargo run
+	(cd codegen && cargo run) | rustfmt > src/block.rs
+	cargo run

@@ -1,89 +1,16 @@
-extern crate regex;
-
-use regex::Regex;
-use std::fs;
 use std::char;
 
-#[derive(Debug)]
-struct Block {
-  first: u32,
-  last:  u32,
-  name:  String,
-}
-
-// #[derive(Clone, Copy)]
-// enum BlockEnum {
-//   Name,
-// }
-
-// impl Block {
-//   fn first(self) -> u32 {
-//   }
-
-//   fn last(self) -> u32 {
-//   }
-
-//   fn chart(self) -> &str {
-//   }
-//
-//   fn name(self) -> &str {
-//    // full display name
-//   }
-
-//   fn surrogates(self) -> bool {
-//   }
-
-//   fn boring(self) -> bool {
-//   }
-// }
-
-// struct Character(char);
-
-// impl display for Character
+mod block;
 
 fn main() -> Result<(), std::io::Error> {
-  let line_re = Regex::new(r#"(?x)
-    (?P<first> [[:xdigit:]]{4,6}) # first codepoint in block
-    [.]{2}                        # ".."
-    (?P<last>  [[:xdigit:]]{4,6}) # last codepoint in block
-    ;\x20                         # "; "
-    (?P<name>  [a-zA-Z0-9\x20-]+) # block name
-    $                             # end of line
-  "#).unwrap();
-
-  let blocks_txt = fs::read_to_string("dat/Blocks.txt")?;
-
-  let mut blocks = Vec::new();
-
-  for line in blocks_txt.lines() {
-    if line.starts_with('#') || line.is_empty() {
+  for block in block::Block::all() {
+    println!("{} – {}", block.name(), block.chart());
+    if block.surrogates() || block.boring() {
+      println!("U+{:04X}–U+{:04X}", block.first_codepoint(), block.last_codepoint());
       continue;
     }
 
-    let captures = line_re.captures(line).unwrap();
-
-    blocks.push(Block {
-      first: u32::from_str_radix(&captures["first"], 16).unwrap(),
-      last:  u32::from_str_radix(&captures["last"],  16).unwrap(),
-      name:  captures["name"].to_string(),
-    });
-  }
-
-  for block in blocks {
-    println!("{} – https://www.unicode.org/charts/PDF/U{:04X}.pdf", block.name, block.first);
-    if block.name == "High Surrogates"                  ||
-       block.name == "High Private Use Surrogates"      ||
-       block.name == "Low Surrogates"                   ||
-       block.name == "Tags"                             || // weird
-       block.name == "Variation Selectors Supplement"   || // boring
-       block.name == "Supplementary Private Use Area-A" || // empty
-       block.name == "Supplementary Private Use Area-B"    // empty
-    {
-      println!("U+{:04X}–U+{:04X}", block.first, block.last);
-      continue;
-    }
-
-    for codepoint in block.first..=block.last {
+    for codepoint in block.first_codepoint()..=block.last_codepoint() {
       if codepoint % 16 == 0 {
         print!("U+{:04X}x ", codepoint); // fix this
       }
@@ -122,6 +49,9 @@ fn main() -> Result<(), std::io::Error> {
   // print blocks that contain character(s)
   // print into different files
   // print or don't print names, orint or don't print link to chart
+  // add uniblocks.txt in root of repo
+  // add a nice block to readme
+  // html output format
 
   Ok(())
 }

@@ -1,5 +1,5 @@
 
 /target
 /codegen/target
-/codegen/Blocks.txt
+/Blocks.txt
 **/*.rs.bk
