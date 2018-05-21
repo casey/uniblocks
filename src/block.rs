@@ -1161,6 +1161,7 @@ impl Block {
         match self {
             Tags
             | VariationSelectorsSupplement
+            | PrivateUseArea
             | SupplementaryPrivateUseAreaA
             | SupplementaryPrivateUseAreaB => true,
             _ => false,

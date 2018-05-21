@@ -76,6 +76,7 @@ pub fn tokens(blocks: Blocks) -> Tokens {
         match self {
           Tags |
           VariationSelectorsSupplement |
+          PrivateUseArea |
           SupplementaryPrivateUseAreaA |
           SupplementaryPrivateUseAreaB => true,
           _ => false,
