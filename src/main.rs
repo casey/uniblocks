@@ -44,23 +44,5 @@ fn main() -> Result<(), std::io::Error> {
     println!();
   }
 
-  // print name of block
-  // print each hex range U+000Fx
-  // print characters in block (if any characters are double width, all should be
-  // pretty box drawing characters (can turn these off)
-  // flags to conrol:
-  // - print or don't print hex at leading
-  // - print or don't print spaces between characters
-  // - print or don't print newlines
-  // - sub or don't sub missing character symbol
-  // (should be able to get pure bytes of all characters)
-  // print block(s) by regex
-  // print blocks that contain character(s)
-  // print into different files
-  // print or don't print names, orint or don't print link to chart
-  // add uniblocks.txt in root of repo
-  // add a nice block to readme
-  // html output format
-
   Ok(())
 }

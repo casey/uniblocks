@@ -11,5 +11,13 @@ get:
 
 codegen:
 	(cd codegen && cargo run) | rustfmt > src/block.rs
-	cargo run > blocks.txt
-	less blocks.txt
+
+build:
+	cargo build
+
+readme: build
+	echo '# uniblocks' 			 >  README.md
+	echo 										 >> README.md
+	echo '```' 				       >> README.md
+	./target/debug/uniblocks >> README.md
+	echo '```'						   >> README.md
